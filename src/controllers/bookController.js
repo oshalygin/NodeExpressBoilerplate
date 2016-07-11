@@ -1,17 +1,26 @@
 import express from "express";
+// import * as bookDal from "../dataAccess/bookDal";
+
+import mongoose from "mongoose";
+let db = mongoose.connect("mongodb://localhost/bookApi");
+let Book = require("../models/book");
 
 let bookController = express.Router();
 
 bookController
     .route("/")
-    .get((request, response) => {
-        let book = {
-            id: "1",
-            title: "Clean Codezz!!!",
-            description: "Some book about clean code and such",
-            pageLength: 1349
-        };
-        response.json(book);
+    .get(function (request, response) {
+        Book.find(function (err, books) {
+            console.log(books);
+            response.json(books);
+        });
+
+
+
+        // let books = bookDal.getAllBooks();
+        // console.log(books);
+
+        // response.send(books);
     });
 
 export default bookController;

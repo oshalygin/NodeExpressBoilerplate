@@ -1,7 +1,22 @@
-import mongoose from "mongoose";
+/* eslint-disable no-console */
 import BookModel from "../models/book";
+import mongoose from "./bookResourceDb";
+import colors from "colors";
 
-let bookDal = mongoose.connect("mongodb://localhost/BookService");
+let Book = mongoose.model("Book", BookModel);
 
-mongoose.dis
+export function getAllBooks() {
+    let result;
 
+    Book.find((error, bookResponse) => {
+        if (!!error) {
+            console.log(error.red);
+            return;
+        }
+        result = bookResponse;
+        console.log(result.yellow);
+    });
+
+    return result;
+
+}

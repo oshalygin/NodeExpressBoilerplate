@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+let mongoose = require("mongoose");
 
-let Schema = mongoose.Schema();
+let Schema = mongoose.Schema;
 let BookModel = new Schema({
     title: {
         type: String
@@ -12,8 +12,9 @@ let BookModel = new Schema({
         type: String
     },
     read: {
-        type: Boolean
+        type: Boolean,
+        default: false
     }
 });
 
-export default mongoose.model("Book", BookModel);
+module.exports = mongoose.model("Book", BookModel);

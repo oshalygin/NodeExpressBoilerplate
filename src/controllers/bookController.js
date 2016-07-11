@@ -1,10 +1,12 @@
 import express from "express";
+
 // import * as bookDal from "../dataAccess/bookDal";
 
 // let db = mongoose.connect("mongodb://localhost/bookApi");
 import db from "../dataAccess/bookResourceDb";
+import Book from "../models/book";
+// let Book = require("../models/book");
 
-let Book = require("../models/book");
 let bookController = express.Router();
 
 bookController

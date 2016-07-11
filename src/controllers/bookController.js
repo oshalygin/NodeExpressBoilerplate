@@ -1,15 +1,14 @@
 import express from "express";
 // import * as bookDal from "../dataAccess/bookDal";
 
-import mongoose from "mongoose";
 // let db = mongoose.connect("mongodb://localhost/bookApi");
-var db = mongoose.connect('mongodb://localhost/bookAPI');
-let Book = require("../models/book");
+import db from "../dataAccess/bookResourceDb";
 
+let Book = require("../models/book");
 let bookController = express.Router();
 
 bookController
-    .route("")
+    .route("/book")
     .get(function(req,res){
 
         var query = {};
@@ -25,11 +24,5 @@ bookController
                 res.json(books);
         });
     });
-
-
-        // let books = bookDal.getAllBooks();
-        // console.log(books);
-
-        // response.send(books);
 
 export default bookController;

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from "express";
 import webpack from "webpack";
 import configuration from "../webpack.config.dev";
@@ -18,7 +19,7 @@ application.use(require("webpack-hot-middleware")(applicationCompiler));
 
 
 application.get("/", (request, response) => {
-    response.send("Derp!")
+    response.send("Derp!");
 });
 
 application.listen(port, (error) => {

@@ -32,6 +32,7 @@
     "babel-polyfill": "6.8.0",
     "bootstrap": "3.3.6",
     "jquery": "2.2.3",
+    "mongoose": "^4.5.3",
     "toastr": "2.1.2"
   },
   "devDependencies": {

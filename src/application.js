@@ -5,6 +5,7 @@ import configuration from "../webpack.config.dev";
 import colors from "colors";
 import open from "open";
 
+import bookController from "./controllers/bookController";
 
 let application = express();
 
@@ -18,19 +19,7 @@ application.use(require("webpack-dev-middleware")(applicationCompiler, {
 }));
 application.use(require("webpack-hot-middleware")(applicationCompiler));
 
-let booksRouter = express.Router();
-booksRouter.route("/books")
-    .get((request, response) => {
-        let book = {
-            id: "1",
-            title: "Clean Codezz",
-            description: "Some book about clean code and such",
-            pageLength: 1349
-        };
-        response.json(book);
-    });
-
-application.use("/api", booksRouter);
+application.use("/api/book", bookController);
 
 application.get("/", (request, response) => {
     response.send("Api welcome page");

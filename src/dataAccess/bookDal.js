@@ -5,7 +5,7 @@ import colors from "colors";
 
 let Book = mongoose.model("Book", BookModel);
 
-export function getAllBooks() {
+export default function getAllBooks() {
     let result;
 
     Book.find((error, bookResponse) => {
@@ -18,5 +18,4 @@ export function getAllBooks() {
     });
 
     return result;
-
 }

@@ -1,28 +1,32 @@
 import express from "express";
-import "../dataAccess/bookResourceDb";
+import mongoose from "mongoose";
+import "../dataAccess/bookDb";
 import Book from "../models/book";
+mongoose.Promise = global.Promise;
 
 let bookController = express.Router();
 
 bookController
     .route("/book")
     .get(function (request, response) {
-
         let query = {};
-
-        if (request.query.genre) {
+        if (!!request.query && request.query.genre) {
             query.genre = request.query.genre;
         }
+        console.log(query);
 
-        Book.find(query, (error, books) => {
-            if (error) {
-                response.status(500)
+        let bookPromise = Book.find(query).exec();
+
+        bookPromise
+            .then(books => {
+                response.
+                    json(books);
+            })
+            .catch(error => {
+                response
+                    .status(500)
                     .send(error);
-            }
-            else {
-                response.json(books);
-            }
-        });
+            });
     });
 
 export default bookController;

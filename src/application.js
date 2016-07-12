@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import express from "express";
-import mongoose from "mongoose";
+import bodyParser from "body-parser";
 import webpack from "webpack";
 import configuration from "../webpack.config.dev";
 import colors from "colors";
@@ -9,6 +9,9 @@ import open from "open";
 import bookController from "./controllers/bookController";
 
 let application = express();
+application.use(bodyParser.urlencoded({ extended: true }));
+application.use(bodyParser.json());
+
 let port = process.env.PORT || 3000;
 
 const applicationCompiler = webpack(configuration);

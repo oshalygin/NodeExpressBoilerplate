@@ -18,13 +18,14 @@ bookController
         let bookPromise = Book.find(query).exec();
         bookPromise
             .then(books => {
-                response.
-                    json(books);
+                response
+                    .status(200)
+                    .json(books);
             })
             .catch(error => {
                 response
                     .status(500)
-                    .send(error);
+                    .json(error);
             });
     });
 
@@ -36,10 +37,14 @@ bookController
         let bookPromise = book.save();
         bookPromise
             .then(savedBook => {
-                response.status(201).send(savedBook);
+                response
+                    .status(200)
+                    .json(savedBook);
             })
             .catch(error => {
-                response.status(500).send(error);
+                response
+                    .status(500)
+                    .json(error);
             });
     });
 
@@ -62,7 +67,7 @@ bookController.use("/book/:id", function (request, response, next) {
         .catch(error => {
             response
                 .status(500)
-                .send(error);
+                .json(error);
         });
 });
 
@@ -84,12 +89,12 @@ bookController.route("/book/:id")
             .then(updatedBook => {
                 response
                     .status(200)
-                    .send(updatedBook);
+                    .json(updatedBook);
             })
             .catch(error => {
                 response
                     .status(500)
-                    .send(error);
+                    .json(error);
             });
     });
 
@@ -114,12 +119,38 @@ bookController
             .then(updatedBook => {
                 response
                     .status(200)
-                    .send(updatedBook);
+                    .json(updatedBook);
             })
             .catch(error => {
                 response
                     .status(500)
-                    .send(error);
+                    .json(error);
+            });
+    });
+
+bookController
+    .route("/book/:id")
+    .delete(function (request, response) {
+
+        console.log(request.book._id);
+        if (!request.book._id) {
+            response
+                .sendStatus(400);
+        }
+        let bookId = request.book._id;
+
+        let deletionPromise = Book.findByIdAndRemove(bookId);
+        deletionPromise
+            .then(deletedBook => {
+                response
+                    .status(200)
+                    .json(deletedBook);
+            })
+            .catch(error => {
+                response
+                    .status(500)
+                    .json(error);
+
             });
     });
 

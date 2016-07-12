@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "babel-node ./utilities/startingDisplayMessage.js",
     "start": "npm-run-all --parallel open:src lint:watch",
-    "open:src": "babel-watch ./src/application.js",
+    "open:src": "babel-node ./src/application.js",
     "lint": "node_modules/.bin/esw webpack.config.* src ./utilities",
     "lint:watch": "npm run lint -- --watch",
     "clean-dist": "npm run remove-dist && mkdir dist",

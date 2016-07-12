@@ -44,24 +44,84 @@ bookController
     });
 
 // {api/book/:id}
+
+bookController.use("/book/:id", function (request, response, next) {
+    let bookId = request.params.id;
+
+    let bookPromise = Book.findById(bookId).exec();
+    bookPromise
+        .then(book => {
+            if (!!book) {
+                request.book = book;
+                next();
+            }
+            else {
+                response.sendStatus(404);
+            }
+        })
+        .catch(error => {
+            response
+                .status(500)
+                .send(error);
+        });
+});
+
 bookController.route("/book/:id")
     .get(function (request, response) {
-        let bookId = request.params.id;
+        response.send(request.book);
+    });
 
-        let bookPromise = Book.findById(bookId).exec();
+bookController.route("/book/:id")
+    .put(function (request, response) {
+        let book = request.book;
+        book.title = request.body.title;
+        book.genre = request.body.genre;
+        book.author = request.body.author;
+        book.read = request.body.read;
+
+        let bookPromise = book.save();
         bookPromise
-            .then(book => {
-                if (!!book) {
-                    response.json(book);
-                }
-                response.sendStatus(404);
+            .then(updatedBook => {
+                response
+                    .status(200)
+                    .send(updatedBook);
             })
             .catch(error => {
                 response
                     .status(500)
                     .send(error);
             });
+    });
 
+bookController
+    .route("/book/:id")
+    .patch(function (request, response) {
+        let book = request.book;
+        if (!!book._id) {
+            delete book._id;
+        }
+
+        if (!!book._v) {
+            delete book._v;
+        }
+
+        for (let key in request.body) {
+            console.log(key.red);
+            book[key] = request.body[key];
+        }
+
+        let bookPromise = book.save();
+        bookPromise
+            .then(updatedBook => {
+                response
+                    .status(200)
+                    .send(updatedBook);
+            })
+            .catch(error => {
+                response
+                    .status(500)
+                    .send(error);
+            });
     });
 
 export default bookController;

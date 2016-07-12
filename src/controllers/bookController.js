@@ -1,56 +1,48 @@
 import express from "express";
 import mongoose from "mongoose";
-import "../dataAccess/bookDb";
+import "../bookDb";
 import Book from "../models/book";
 mongoose.Promise = global.Promise;
 
-let bookController = express.Router();
+export function getAllBooks(request, response) {
+    let query = {};
+    if (!!request.query && request.query.genre) {
+        query.genre = request.query.genre;
+    }
 
-// {api/books}
-bookController
-    .route("/book")
-    .get(function (request, response) {
-        let query = {};
-        if (!!request.query && request.query.genre) {
-            query.genre = request.query.genre;
-        }
+    let bookPromise = Book.find(query).exec();
+    bookPromise
+        .then(books => {
+            response
+                .status(200)
+                .json(books);
+        })
+        .catch(error => {
+            response
+                .status(500)
+                .json(error);
+        });
+}
 
-        let bookPromise = Book.find(query).exec();
-        bookPromise
-            .then(books => {
-                response
-                    .status(200)
-                    .json(books);
-            })
-            .catch(error => {
-                response
-                    .status(500)
-                    .json(error);
-            });
-    });
+export function saveBook(request, response) {
+    let book = new Book(request.body);
 
-bookController
-    .route("/book")
-    .post(function (request, response) {
-        let book = new Book(request.body);
+    let bookPromise = book.save();
+    bookPromise
+        .then(savedBook => {
+            response
+                .status(200)
+                .json(savedBook);
+        })
+        .catch(error => {
+            response
+                .status(500)
+                .json(error);
+        });
 
-        let bookPromise = book.save();
-        bookPromise
-            .then(savedBook => {
-                response
-                    .status(200)
-                    .json(savedBook);
-            })
-            .catch(error => {
-                response
-                    .status(500)
-                    .json(error);
-            });
-    });
+}
 
-// {api/book/:id}
-
-bookController.use("/book/:id", function (request, response, next) {
+export function bookIdMiddleware(request, response, next) {
     let bookId = request.params.id;
 
     let bookPromise = Book.findById(bookId).exec();
@@ -69,89 +61,80 @@ bookController.use("/book/:id", function (request, response, next) {
                 .status(500)
                 .json(error);
         });
-});
+}
 
-bookController.route("/book/:id")
-    .get(function (request, response) {
-        response.send(request.book);
-    });
+export function getBook(request, response) {
+    response.send(request.book);
+}
 
-bookController.route("/book/:id")
-    .put(function (request, response) {
-        let book = request.book;
-        book.title = request.body.title;
-        book.genre = request.body.genre;
-        book.author = request.body.author;
-        book.read = request.body.read;
+export function updateBook(request, response) {
+    let book = request.book;
+    book.title = request.body.title;
+    book.genre = request.body.genre;
+    book.author = request.body.author;
+    book.read = request.body.read;
 
-        let bookPromise = book.save();
-        bookPromise
-            .then(updatedBook => {
-                response
-                    .status(200)
-                    .json(updatedBook);
-            })
-            .catch(error => {
-                response
-                    .status(500)
-                    .json(error);
-            });
-    });
-
-bookController
-    .route("/book/:id")
-    .patch(function (request, response) {
-        if (!!request.book._id) {
-            delete request.body._id;
-        }
-
-        if (!!request.book._v) {
-            delete request.body._v;
-        }
-
-        let book = request.book;
-        for (let key in request.body) {
-            book[key] = request.body[key];
-        }
-
-        let bookPromise = book.save();
-        bookPromise
-            .then(updatedBook => {
-                response
-                    .status(200)
-                    .json(updatedBook);
-            })
-            .catch(error => {
-                response
-                    .status(500)
-                    .json(error);
-            });
-    });
-
-bookController
-    .route("/book/:id")
-    .delete(function (request, response) {
-
-        console.log(request.book._id);
-        if (!request.book._id) {
+    let bookPromise = book.save();
+    bookPromise
+        .then(updatedBook => {
             response
-                .sendStatus(400);
-        }
-        let bookId = request.book._id;
+                .status(200)
+                .json(updatedBook);
+        })
+        .catch(error => {
+            response
+                .status(500)
+                .json(error);
+        });
+}
 
-        let deletionPromise = Book.findByIdAndRemove(bookId);
-        deletionPromise
-            .then(deletedBook => {
-                response
-                    .status(200)
-                    .json(deletedBook);
-            })
-            .catch(error => {
-                response
-                    .status(500)
-                    .json(error);
+export function patchBook(request, response) {
+    if (!!request.book._id) {
+        delete request.body._id;
+    }
 
-            });
-    });
+    if (!!request.book._v) {
+        delete request.body._v;
+    }
 
-export default bookController;
+    let book = request.book;
+    for (let key in request.body) {
+        book[key] = request.body[key];
+    }
+
+    let bookPromise = book.save();
+    bookPromise
+        .then(updatedBook => {
+            response
+                .status(200)
+                .json(updatedBook);
+        })
+        .catch(error => {
+            response
+                .status(500)
+                .json(error);
+        });
+}
+
+export function deleteBook(request, response) {
+    console.log(request.book._id);
+    if (!request.book._id) {
+        response
+            .sendStatus(400);
+    }
+    let bookId = request.book._id;
+
+    let deletionPromise = Book.findByIdAndRemove(bookId);
+    deletionPromise
+        .then(deletedBook => {
+            response
+                .status(200)
+                .json(deletedBook);
+        })
+        .catch(error => {
+            response
+                .status(500)
+                .json(error);
+
+        });
+}

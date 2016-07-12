@@ -6,7 +6,7 @@ import configuration from "../webpack.config.dev";
 import colors from "colors";
 import open from "open";
 
-import bookController from "./controllers/bookController";
+import router from "./routes";
 
 let application = express();
 application.use(bodyParser.urlencoded({ extended: true }));
@@ -25,8 +25,7 @@ application.get("/", (request, response) => {
     response.send("Api welcome page");
 });
 
-application.use('/api',
-    bookController);
+application.use('/api', router);
 
 application.listen(port, (error) => {
     if (!!error) {

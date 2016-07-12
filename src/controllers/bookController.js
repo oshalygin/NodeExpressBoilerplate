@@ -96,17 +96,16 @@ bookController.route("/book/:id")
 bookController
     .route("/book/:id")
     .patch(function (request, response) {
+        if (!!request.book._id) {
+            delete request.body._id;
+        }
+
+        if (!!request.book._v) {
+            delete request.body._v;
+        }
+
         let book = request.book;
-        if (!!book._id) {
-            delete book._id;
-        }
-
-        if (!!book._v) {
-            delete book._v;
-        }
-
         for (let key in request.body) {
-            console.log(key.red);
             book[key] = request.body[key];
         }
 

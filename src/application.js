@@ -22,12 +22,13 @@ application.get("/", (request, response) => {
     response.send("Api welcome page");
 });
 
-application.use('/api', bookController);
+application.use('/api',
+    bookController);
 
 application.listen(port, (error) => {
     if (!!error) {
         console.log(error.bold.red);
     }
     open(`http://localhost:${port}`);
-    console.log(`connection opened on http://localhost:${port}`.green);
+    console.log(`Serving API AT http://localhost:${port}`.blue);
 });

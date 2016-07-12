@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 let Schema = mongoose.Schema;
 
-var Book = new Schema({
+let Book = new Schema({
     title: { type: String },
     author: { type: String },
     genre: { type: String },

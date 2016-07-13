@@ -10,7 +10,9 @@
     "lint": "node_modules/.bin/esw webpack.config.* src ./utilities",
     "lint:watch": "npm run lint -- --watch",
     "clean-dist": "npm run remove-dist && mkdir dist",
-    "remove-dist": "node_modules/.bin/rimraf ./dist"
+    "remove-dist": "node_modules/.bin/rimraf ./dist",
+    "test": "mocha --reporter spec utilities/testLoader.js \"src/**/*.spec.js\"",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -62,6 +64,7 @@
     "npm-run-all": "1.8.0",
     "open": "0.0.5",
     "rimraf": "2.5.2",
+    "sinon": "^1.17.4",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.13.0",

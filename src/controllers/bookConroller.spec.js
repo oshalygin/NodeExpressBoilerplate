@@ -7,34 +7,37 @@ import Book from "../models/book";
 
 describe("Book Controller", () => {
     describe("Post", () => {
-        const Book = function (book) {
-            this.save = () => {
-                return new Promise(function (resolve, reject) {
-                    let savedBook = {
-                        author: "Oleg Shalygin"
-                    };
-                    resolve(savedBook);
-                });
-            }
-        };
-        let sut = bookController(Book);
-        // sinon.stub(Book, bookStub);
 
-        let request = {
-            body: {
-                author: "Carlota Turcios"
-            }
-        };
+        it("status of 200 returned when a successful post is made", () => {
+            const Book = function (book) {
+                this.save = () => {
+                    return new Promise(function (resolve, reject) {
+                        let savedBook = {
+                            author: "Oleg Shalygin"
+                        };
+                        resolve(savedBook);
+                    });
+                }
+            };
+            let sut = bookController(Book);
 
-        let response = {
-            status: sinon.spy(),
-            json: sinon.spy()
-        };
+            let request = {
+                body: {
+                    author: "Oleg Shalygin"
+                }
+            };
 
-        sut.saveBook(request, response);
-        let actual = response.status.calledWith(200);
-        console.log(actual);
+            var response = {
+                status: sinon.spy(),
+                json: sinon.spy()
+            };
 
-        // expect(actual).toBeTruthy();
+            sut.saveBook(request, response);
+
+            let actual = response.status.called;
+            console.log(actual);
+            // expect(actual).toBeTruthy();
+        });
+
     });
 });

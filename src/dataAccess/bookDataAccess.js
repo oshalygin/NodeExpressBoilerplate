@@ -24,24 +24,18 @@ export function getAllBooks(query, callback) {
         });
 }
 
-// export function saveBook(request, response) {
-//     let book = new Book(request.body);
+export function saveBook(entity, callback) {
+    let book = new bookModel(entity);
 
-//     let bookPromise = book.save();
-//     bookPromise
-//         .then(savedBook => {
-//             console.log(savedBook);
-//             response
-//                 .status(200);
-//             // .json(savedBook);
-//         })
-//         .catch(error => {
-//             response
-//                 .status(500)
-//                 .json(error);
-//         });
-
-// }
+    let bookPromise = book.save();
+    bookPromise
+        .then(savedBook => {
+            callback(null, book);
+        })
+        .catch(error => {
+            callback(error)
+        });
+}
 
 // export function bookIdMiddleware(request, response, next) {
 //     let bookId = request.params.id;

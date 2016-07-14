@@ -4,7 +4,8 @@ import * as dataAccessApi from "../dataAccess/bookDataAccess";
 export default function bookController(dataAcccess = dataAccessApi) {
 
     return {
-        get
+        get,
+        post
     };
 
     function get(request, response) {
@@ -15,6 +16,16 @@ export default function bookController(dataAcccess = dataAccessApi) {
                 response.status(500);
             }
             response.status(200).json(books);
+        });
+    }
+
+    function post(request, response) {
+        let bookToSave = request.body;
+        dataAcccess.saveBook(bookToSave, function (error, savedBook) {
+            if (!!error) {
+                response.status(500).json(error);
+            }
+            response.status(201).json(savedBook);
         });
     }
 }

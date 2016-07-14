@@ -7,9 +7,9 @@ import Book from "../models/book";
 
 describe("Book Controller", () => {
 
-    describe("Post", () => {
+    describe("GetAll", () => {
 
-        it("status of 200 returned when a successful post is made", () => {
+        it("status of 200 returned when a successful get is made", () => {
             let expected = 200;
             let dataAccessMock = {
                 getAllBooks: function (callback) {

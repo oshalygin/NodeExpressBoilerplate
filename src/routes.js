@@ -6,8 +6,8 @@ let bookController = bookApi();
 // {api/books}
 router
     .route("/book")
-    .get(bookController.get);
-    // .post(bookController.saveBook);
+    .get(bookController.get)
+    .post(bookController.post);
 
 // // {api/book/:id}
 // router.use("/book/:id", bookController.bookIdMiddleware);

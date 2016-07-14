@@ -6,23 +6,14 @@ import colors from "colors";
 mongoose.Promise = global.Promise;
 
 
-export function getAllBooks(callback) {
-    // let query = {};
-    // if (!!request.query && request.query.genre) {
-    //     query.genre = request.query.genre;
-    // }
+export function getAllBooks(query, callback) {
 
-    // let bookPromise = Book.find(query).exec();
-    // bookPromise
-    //     .then(books => {
-    //         return books;
-    //     })
-    //     .catch(error => {
-    //         console.log(error.red);
-    //         return null;
-    //     });
+    let queryCriteria = {};
+    if (!!query && query.genre) {
+        queryCriteria.genre = query.genre;
+    }
 
-    let bookPromise = bookModel.find().exec();
+    let bookPromise = bookModel.find(queryCriteria).exec();
     bookPromise
         .then(books => {
             callback(null, books);

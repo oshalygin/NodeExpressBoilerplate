@@ -16,7 +16,7 @@ describe("Book Controller", () => {
                     const book = {
                         author: "Oleg Shalygin"
                     };
-                    callback(null, book)
+                    callback(null, book);
                 }
             };
 
@@ -48,7 +48,7 @@ describe("Book Controller", () => {
                     const book = {
                         author: "Oleg Shalygin"
                     };
-                    callback(null, book)
+                    callback(null, book);
                 }
             };
 
@@ -73,6 +73,7 @@ describe("Book Controller", () => {
             sut.get(request, response);
 
         });
+
 
     });
 });

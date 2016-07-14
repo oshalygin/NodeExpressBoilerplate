@@ -9,7 +9,8 @@ export default function bookController(dataAcccess = dataAccessApi) {
 
     function get(request, response) {
 
-        dataAcccess.getAllBooks(function (error, books) {
+        let query = request.query;
+        dataAcccess.getAllBooks(query, function (error, books) {
             if (!!error) {
                 response.status(500);
             }

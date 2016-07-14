@@ -1,19 +1,28 @@
-import * as sut from "./bookController";
+import bookController from "./bookController";
 import expect from "expect";
 import sinon from "sinon";
 import Book from "../models/book";
 
+
+
 describe("Book Controller", () => {
     describe("Post", () => {
         const Book = function (book) {
-            this.save = () => { }
+            this.save = () => {
+                return new Promise(function (resolve, reject) {
+                    let savedBook = {
+                        author: "Oleg Shalygin"
+                    };
+                    resolve(savedBook);
+                });
+            }
         };
-
+        let sut = bookController(Book);
         // sinon.stub(Book, bookStub);
 
         let request = {
             body: {
-                author: "Oleg Shalygin"
+                author: "Carlota Turcios"
             }
         };
 
@@ -23,10 +32,9 @@ describe("Book Controller", () => {
         };
 
         sut.saveBook(request, response);
-        let actual = response.status.called;
+        let actual = response.status.calledWith(200);
         console.log(actual);
 
         // expect(actual).toBeTruthy();
     });
 });
-

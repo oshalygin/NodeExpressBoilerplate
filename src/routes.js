@@ -1,8 +1,8 @@
 import express from "express";
-import * as bookController from "./controllers/bookController";
+import bookApi from "./controllers/bookController";
 
 let router = express.Router();
-
+let bookController = bookApi();
 // {api/books}
 router
     .route("/book")

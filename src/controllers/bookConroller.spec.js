@@ -6,20 +6,21 @@ import Book from "../models/book";
 
 
 describe("Book Controller", () => {
+
     describe("Post", () => {
 
         it("status of 200 returned when a successful post is made", () => {
-            const Book = function (book) {
-                this.save = () => {
-                    return new Promise(function (resolve, reject) {
-                        let savedBook = {
-                            author: "Oleg Shalygin"
-                        };
-                        resolve(savedBook);
-                    });
+            let expected = 200;
+            let dataAccessMock = {
+                getAllBooks: function (callback) {
+                    const book = {
+                        author: "Oleg Shalygin"
+                    };
+                    callback(null, book)
                 }
             };
-            let sut = bookController(Book);
+
+            let sut = bookController(dataAccessMock);
 
             let request = {
                 body: {
@@ -27,16 +28,50 @@ describe("Book Controller", () => {
                 }
             };
 
-            var response = {
-                status: sinon.spy(),
-                json: sinon.spy()
+            let response = {
+                status: function (statusCode) {
+                    expect(statusCode).toEqual(expected);
+                    return this;
+                },
+                json: function () { }
             };
 
-            sut.saveBook(request, response);
+            sut.get(request, response);
 
-            let actual = response.status.called;
-            console.log(actual);
-            // expect(actual).toBeTruthy();
+        });
+
+        it("the object returned from the api is a book", () => {
+            let expected = "Oleg Shalygin";
+
+            let dataAccessMock = {
+                getAllBooks: function (callback) {
+                    const book = {
+                        author: "Oleg Shalygin"
+                    };
+                    callback(null, book)
+                }
+            };
+
+            let sut = bookController(dataAccessMock);
+
+            let request = {
+                body: {
+                    author: "Oleg Shalygin"
+                }
+            };
+
+            let response = {
+                status: function (statusCode) {
+                    return this;
+                },
+                json: function (book) {
+                    let actual = book.author;
+                    expect(actual).toEqual(expected);
+                 }
+            };
+
+            sut.get(request, response);
+
         });
 
     });

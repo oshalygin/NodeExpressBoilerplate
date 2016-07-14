@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import "./bookDb";
 import mongoose from "mongoose";
 import bookModel from "../models/book";
@@ -26,9 +27,9 @@ export function getAllBooks(callback) {
         .then(books => {
             callback(null, books);
         })
-        .catch(err => {
-            console.log(err.red);
-            callback(error)
+        .catch(error => {
+            console.log(error.red);
+            callback(error);
         });
 }
 

@@ -37,26 +37,25 @@ export function saveBook(entity, callback) {
         });
 }
 
-// export function bookIdMiddleware(request, response, next) {
-//     let bookId = request.params.id;
 
-//     let bookPromise = Book.findById(bookId).exec();
-//     bookPromise
-//         .then(book => {
-//             if (!!book) {
-//                 request.book = book;
-//                 next();
-//             }
-//             else {
-//                 response.sendStatus(404);
-//             }
-//         })
-//         .catch(error => {
-//             response
-//                 .status(500)
-//                 .json(error);
-//         });
-// }
+export function bookIdMiddleware(bookId, callback) {
+
+    let bookPromise = bookModel.findById(bookId).exec();
+    bookPromise
+        .then(book => {
+            if (!!book) {
+                callback(null, book);
+            }
+            else {
+                callback();
+            }
+        })
+        .catch(error => {
+            callback(error);
+        });
+}
+
+
 
 // export function getBook(request, response) {
 //     response.send(request.book);

@@ -9,12 +9,12 @@ router
     .get(bookController.get)
     .post(bookController.post);
 
-// // {api/book/:id}
-// router.use("/book/:id", bookController.bookIdMiddleware);
-// router.route("/book/:id")
-//     .get(bookController.getBook)
-//     .put(bookController.updateBook)
-//     .patch(bookController.patchBook)
-//     .delete(bookController.deleteBook);
+// {api/book/:id}
+router.use("/book/:id", bookController.bookIdMiddleWare);
+router.route("/book/:id")
+    .get(bookController.getById);
+    // .put(bookController.updateBook)
+    // .patch(bookController.patchBook)
+    // .delete(bookController.deleteBook);
 
 export default router;

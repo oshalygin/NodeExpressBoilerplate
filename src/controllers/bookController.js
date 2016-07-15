@@ -5,8 +5,32 @@ export default function bookController(dataAcccess = dataAccessApi) {
 
     return {
         get,
-        post
+        getById,
+        post,
+        bookIdMiddleWare
     };
+
+    function bookIdMiddleWare(request, response, next) {
+        let bookId = request.params.id;
+        dataAcccess.bookIdMiddleware(bookId, function (error, book) {
+            if (!!error) {
+                response.status(500).json(error);
+            }
+            if (!book) {
+                response.sendStatus(404);
+            }
+            else {
+                request.book = book;
+                next();
+            }
+
+        });
+    }
+
+    function getById(request, response) {
+        const book = request.book;
+        response.status(200).json(book);
+    }
 
     function get(request, response) {
 

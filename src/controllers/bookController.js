@@ -1,19 +1,20 @@
 import express from "express";
 import * as dataAccessApi from "../dataAccess/bookDataAccess";
 
-export default function bookController(dataAcccess = dataAccessApi) {
+export default function bookController(dataAccess = dataAccessApi) {
 
     return {
         get,
         getById,
         post,
         update,
+        patch,
         bookIdMiddleWare
     };
 
     function bookIdMiddleWare(request, response, next) {
         let bookId = request.params.id;
-        dataAcccess.bookIdMiddleware(bookId, function (error, book) {
+        dataAccess.bookIdMiddleware(bookId, function (error, book) {
             if (!!error) {
                 response.status(500).json(error);
             }
@@ -36,7 +37,7 @@ export default function bookController(dataAcccess = dataAccessApi) {
     function get(request, response) {
 
         let query = request.query;
-        dataAcccess.getAllBooks(query, function (error, books) {
+        dataAccess.getAllBooks(query, function (error, books) {
             if (!!error) {
                 response.status(500).json(error);
             }
@@ -46,7 +47,7 @@ export default function bookController(dataAcccess = dataAccessApi) {
 
     function post(request, response) {
         let bookToSave = request.body;
-        dataAcccess.saveBook(bookToSave, function (error, savedBook) {
+        dataAccess.saveBook(bookToSave, function (error, savedBook) {
             if (!!error) {
                 response.status(500).json(error);
             }
@@ -56,7 +57,7 @@ export default function bookController(dataAcccess = dataAccessApi) {
 
     function update(request, response) {
         let bookToUpdate = request.body;
-        dataAcccess.updateBook(bookToUpdate, function (error, updatedBook) {
+        dataAccess.updateBook(bookToUpdate, function (error, updatedBook) {
             if (!!error) {
                 response.status(500).json(error);
             }
@@ -66,11 +67,21 @@ export default function bookController(dataAcccess = dataAccessApi) {
 
     function patch(request, response) {
         let bookToPatch = request.body;
-        dataAcccess.patchBook(bookToPatch, function (error, patchedBook) {
+        dataAccess.patchBook(bookToPatch, function (error, patchedBook) {
+            if (!!error) {
+
+            }
+            response.status(200).json(patchedBook);
+        });
+    }
+
+    function deleteBook(request, response) {
+        let bookId = request.body._id;
+        dataAccess.deleteBook(bookid, function (error, deletedBook) {
             if (!!error) {
                 response.status(500).json(error);
             }
-            response.status(200).json(patchedBook);
+            response.status(200).json(deletedBook);
         });
     }
 }

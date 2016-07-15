@@ -12,9 +12,9 @@ router
 // {api/book/:id}
 router.use("/book/:id", bookController.bookIdMiddleWare);
 router.route("/book/:id")
-    .get(bookController.getById);
-    // .put(bookController.updateBook)
-    // .patch(bookController.patchBook)
+    .get(bookController.getById)
+    .put(bookController.update)
+    .patch(bookController.patch);
     // .delete(bookController.deleteBook);
 
 export default router;

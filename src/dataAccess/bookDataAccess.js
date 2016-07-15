@@ -83,25 +83,14 @@ export function patchBook(book, callback) {
         });
 }
 
-// export function deleteBook(request, response) {
+export function deleteBook(bookId, callback) {
 
-//     if (!request.book._id) {
-//         response
-//             .sendStatus(400);
-//     }
-//     let bookId = request.book._id;
-
-//     let deletionPromise = Book.findByIdAndRemove(bookId);
-//     deletionPromise
-//         .then(deletedBook => {
-//             response
-//                 .status(200)
-//                 .json(deletedBook);
-//         })
-//         .catch(error => {
-//             response
-//                 .status(500)
-//                 .json(error);
-
-//         });
-// }
+    let deletionPromise = Book.findByIdAndRemove(bookId);
+    deletionPromise
+        .then(deletedBook => {
+            callback(null, deletedBook);
+        })
+        .catch(error => {
+            callback(error);
+        });
+}

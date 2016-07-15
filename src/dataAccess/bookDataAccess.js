@@ -33,7 +33,7 @@ export function saveBook(entity, callback) {
             callback(null, book);
         })
         .catch(error => {
-            callback(error)
+            callback(error);
         });
 }
 
@@ -55,9 +55,13 @@ export function bookIdMiddleware(bookId, callback) {
         });
 }
 
-export function updateBook(book, callback) {
-
-    let bookPromise = book.save();
+export function updateBook(currentEntity, updateEntity, callback) {
+    console.log(currentEntity);
+    console.log(updateEntity);
+    let updateToEntity = Object.assign({}, { _id: currentEntity._id }, updateEntity);
+    console.log(updateToEntity);
+    let bookToUpdate = new bookModel(updateToEntity);
+    let bookPromise = bookToUpdate.save();
     bookPromise
         .then(updatedBook => {
             callback(null, updatedBook);
@@ -67,13 +71,19 @@ export function updateBook(book, callback) {
         });
 }
 
-export function patchBook(book, callback) {
+export function patchBook(currentEntity, patchEntity, callback) {
 
-    let bookToUpdate = Object.assign({}, book);
-    if (!!bookToUpdate._id) { delete bookToUpdate._id };
-    if (!!bookToUpdate._v) { delete bookToUpdate._v };
+    let parsedBook = Object.assign({}, patchEntity);
+    if (!!parsedBook._id) { delete parsedBook._id; }
+    if (!!parsedBook._v) { delete parsedBook._v; }
 
-    let bookPromise = bookToUpdate.save();
+    let mappedBook = currentEntity;
+    for (let key in parsedBook) {
+        mappedBook[key] = parsedBook[key];
+    }
+
+    let bookToUpdate = new bookModel(mappedBook);
+    let bookPromise = parsedBook.save();
     bookPromise
         .then(updatedBook => {
             callback(null, updatedBook);
@@ -85,7 +95,7 @@ export function patchBook(book, callback) {
 
 export function deleteBook(bookId, callback) {
 
-    let deletionPromise = Book.findByIdAndRemove(bookId);
+    let deletionPromise = bookModel.findByIdAndRemove(bookId);
     deletionPromise
         .then(deletedBook => {
             callback(null, deletedBook);

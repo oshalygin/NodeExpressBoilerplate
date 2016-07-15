@@ -9,6 +9,7 @@ export default function bookController(dataAccess = dataAccessApi) {
         post,
         update,
         patch,
+        deleteBook,
         bookIdMiddleWare
     };
 
@@ -25,7 +26,6 @@ export default function bookController(dataAccess = dataAccessApi) {
                 request.book = book;
                 next();
             }
-
         });
     }
 
@@ -56,8 +56,11 @@ export default function bookController(dataAccess = dataAccessApi) {
     }
 
     function update(request, response) {
+
+        let currentBook = request.book;
         let bookToUpdate = request.body;
-        dataAccess.updateBook(bookToUpdate, function (error, updatedBook) {
+
+        dataAccess.updateBook(currentBook, bookToUpdate, function (error, updatedBook) {
             if (!!error) {
                 response.status(500).json(error);
             }
@@ -66,18 +69,23 @@ export default function bookController(dataAccess = dataAccessApi) {
     }
 
     function patch(request, response) {
-        let bookToPatch = request.body;
-        dataAccess.patchBook(bookToPatch, function (error, patchedBook) {
-            if (!!error) {
 
+        let currentBook = request.book;
+        let bookToPatch = request.body;
+
+        dataAccess.patchBook(currentBook, bookToPatch, function (error, patchedBook) {
+            if (!!error) {
+                response.status(500).json(error);
             }
             response.status(200).json(patchedBook);
         });
     }
 
     function deleteBook(request, response) {
+
         let bookId = request.body._id;
-        dataAccess.deleteBook(bookid, function (error, deletedBook) {
+
+        dataAccess.deleteBook(bookId, function (error, deletedBook) {
             if (!!error) {
                 response.status(500).json(error);
             }

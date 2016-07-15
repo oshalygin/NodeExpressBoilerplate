@@ -55,60 +55,33 @@ export function bookIdMiddleware(bookId, callback) {
         });
 }
 
+export function updateBook(book, callback) {
 
+    let bookPromise = book.save();
+    bookPromise
+        .then(updatedBook => {
+            callback(null, updatedBook);
+        })
+        .catch(error => {
+            callback(error);
+        });
+}
 
-// export function getBook(request, response) {
-//     response.send(request.book);
-// }
+export function patchBook(book, callback) {
 
-// export function updateBook(request, response) {
-//     let book = request.book;
-//     book.title = request.body.title;
-//     book.genre = request.body.genre;
-//     book.author = request.body.author;
-//     book.read = request.body.read;
+    let bookToUpdate = Object.assign({}, book);
+    if (!!bookToUpdate._id) { delete bookToUpdate._id };
+    if (!!bookToUpdate._v) { delete bookToUpdate._v };
 
-//     let bookPromise = book.save();
-//     bookPromise
-//         .then(updatedBook => {
-//             response
-//                 .status(200)
-//                 .json(updatedBook);
-//         })
-//         .catch(error => {
-//             response
-//                 .status(500)
-//                 .json(error);
-//         });
-// }
-
-// export function patchBook(request, response) {
-//     if (!!request.book._id) {
-//         delete request.body._id;
-//     }
-
-//     if (!!request.book._v) {
-//         delete request.body._v;
-//     }
-
-//     let book = request.book;
-//     for (let key in request.body) {
-//         book[key] = request.body[key];
-//     }
-
-//     let bookPromise = book.save();
-//     bookPromise
-//         .then(updatedBook => {
-//             response
-//                 .status(200)
-//                 .json(updatedBook);
-//         })
-//         .catch(error => {
-//             response
-//                 .status(500)
-//                 .json(error);
-//         });
-// }
+    let bookPromise = bookToUpdate.save();
+    bookPromise
+        .then(updatedBook => {
+            callback(null, updatedBook);
+        })
+        .catch(error => {
+            callback(error);
+        });
+}
 
 // export function deleteBook(request, response) {
 

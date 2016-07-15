@@ -7,6 +7,7 @@ export default function bookController(dataAcccess = dataAccessApi) {
         get,
         getById,
         post,
+        update,
         bookIdMiddleWare
     };
 
@@ -37,7 +38,7 @@ export default function bookController(dataAcccess = dataAccessApi) {
         let query = request.query;
         dataAcccess.getAllBooks(query, function (error, books) {
             if (!!error) {
-                response.status(500);
+                response.status(500).json(error);
             }
             response.status(200).json(books);
         });
@@ -50,6 +51,26 @@ export default function bookController(dataAcccess = dataAccessApi) {
                 response.status(500).json(error);
             }
             response.status(201).json(savedBook);
+        });
+    }
+
+    function update(request, response) {
+        let bookToUpdate = request.body;
+        dataAcccess.updateBook(bookToUpdate, function (error, updatedBook) {
+            if (!!error) {
+                response.status(500).json(error);
+            }
+            response.status(200).json(updatedBook);
+        });
+    }
+
+    function patch(request, response) {
+        let bookToPatch = request.body;
+        dataAcccess.patchBook(bookToPatch, function (error, patchedBook) {
+            if (!!error) {
+                response.status(500).json(error);
+            }
+            response.status(200).json(patchedBook);
         });
     }
 }

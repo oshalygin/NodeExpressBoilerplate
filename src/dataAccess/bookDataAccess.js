@@ -68,8 +68,12 @@ export function updateBook(currentEntity, updateEntity, callback) {
     let bookPromise = bookModel.findByIdAndUpdate(currentEntity._id, currentEntity).exec();
 
     bookPromise
-        .then(updatedBook => {
-            callback(null, updatedBook);
+        .then((currentBookObject) => {
+            return Promise.all([bookModel.findById(currentEntity._id).exec()])
+        })
+        .then((newlyUpdatedBook) => {
+            console.log(newlyUpdatedBook);
+            callback(null, newlyUpdatedBook);
         })
         .catch(error => {
             callback(error);

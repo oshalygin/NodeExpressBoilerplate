@@ -56,8 +56,7 @@ export function bookIdMiddleware(bookId, callback) {
 }
 
 export function updateBook(currentEntity, updateEntity, callback) {
-    console.log(currentEntity);
-    console.log(updateEntity);
+
     let updateToEntity = Object.assign({}, { _id: currentEntity._id }, updateEntity);
     console.log(updateToEntity);
     let bookToUpdate = new bookModel(updateToEntity);

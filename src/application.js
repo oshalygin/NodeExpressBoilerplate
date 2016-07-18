@@ -34,3 +34,5 @@ application.listen(port, (error) => {
     open(`http://localhost:${port}`);
     console.log(`Serving API AT http://localhost:${port}`.blue);
 });
+
+export default application;

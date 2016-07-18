@@ -56,18 +56,15 @@ export function bookIdMiddleware(bookId, callback) {
 }
 
 export function updateBook(currentEntity, updateEntity, callback) {
+    let updateBook = new bookModel(currentEntity);
 
-    let updateToEntity = Object.assign({}, updateEntity);
-    if (!!updateToEntity._id) { delete updateToEntity._id; }
-    if (!!updateToEntity._v) { delete updateToEntity._v; }
-    let bookId = currentEntity._id;
+    updateBook.read = updateEntity.read;
+    updateBook.title = updateEntity.title;
+    updateBook.author = updateEntity.author;
+    updateBook.genre = updateEntity.genre;
 
-    let bookPromise = bookModel.findById(bookId, updateToEntity).exec();
-
+    let bookPromise = updateBook.save(updateBook);
     bookPromise
-        .then((currentBookObject) => {
-            return Promise.all([bookModel.findById(bookId).exec()]);
-        })
         .then((newlyUpdatedBook) => {
             callback(null, newlyUpdatedBook);
         })

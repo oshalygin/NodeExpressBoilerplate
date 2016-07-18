@@ -83,7 +83,7 @@ export default function bookController(dataAccess = dataAccessApi) {
 
     function deleteBook(request, response) {
 
-        let bookId = request.body._id;
+        let bookId = request.book._id;
 
         dataAccess.deleteBook(bookId, function (error, deletedBook) {
             if (!!error) {

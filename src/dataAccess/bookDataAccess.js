@@ -79,13 +79,13 @@ export function patchBook(currentEntity, patchEntity, callback) {
     if (!!parsedBook._id) { delete parsedBook._id; }
     if (!!parsedBook._v) { delete parsedBook._v; }
 
-    let mappedBook = currentEntity;
+    let bookToUpdate = new bookModel(currentEntity);
+
     for (let key in parsedBook) {
-        mappedBook[key] = parsedBook[key];
+        bookToUpdate[key] = parsedBook[key];
     }
 
-    let bookToUpdate = new bookModel(mappedBook);
-    let bookPromise = parsedBook.save();
+    let bookPromise = bookToUpdate.save();
     bookPromise
         .then(updatedBook => {
             callback(null, updatedBook);
